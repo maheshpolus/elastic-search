@@ -81,7 +81,7 @@ this.clearField = new String('true');
 
 The "(selectedResult)" will emit "null" on close btn usage, mouse down on error or no result cases handle your functions accordingly
 
-On elastic error or no results the drop down will show no results
+On elastic error or no results the drop down will show "no results"
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
