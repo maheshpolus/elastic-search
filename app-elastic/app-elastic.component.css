@@ -1,0 +1,67 @@
+.searchBox>input[type="text"] {
+	border-radius: 20px;
+	border: 1px #DEDEDE solid;
+	width: 100%;
+	padding-right: 35px;
+	line-height: 27px;
+	height: 30px;
+	font-size: .8em;
+	padding-left: 10px;
+}
+.searchButton {
+	position: absolute;
+	right: 11px;
+	top: 3px;
+	/* font-size: 1.2em; */
+	color: #9E9E9E;
+	cursor: pointer;
+}
+
+/* .searchButton:hover {
+	color: #00bcd4 !important;
+} */
+ul.sb-results-dropdown-menu {
+    margin: 0;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: scroll;
+    background: white;
+    border-left: 1px #26A69A solid;
+    border-right: 1px #26A69A solid;
+    border-radius: 10px;
+}
+
+ul.sb-results-dropdown-menu > li {
+    position: relative;
+    border-bottom: 1px dotted #ccc;
+    height: 47px;
+    padding: 10px;
+    list-style: none;
+    color: #26A69A;
+}
+ul.sb-results-dropdown-menu > li:hover {
+	 background: #e0eaff;
+	 color: #26A69A;
+}
+
+ul.sb-results-dropdown-menu > li span {
+    line-height:27px;
+    padding-left:5px;
+    cursor:pointer;
+    white-space: nowrap;
+    display: block;
+    font-size: 0.8em;
+}
+
+ul.sb-results-dropdown-menu > li:last-child {
+    border-bottom: 0;
+}
+
+.sb-seachresults {
+    position: absolute;
+    top: 32px;
+    z-index: 5;
+    width: 100%;
+    border-radius: 3px;
+    box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.18);
+}

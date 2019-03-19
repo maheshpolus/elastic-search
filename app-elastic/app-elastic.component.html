@@ -1,0 +1,21 @@
+<div class="searchBox" id="searchElastic">
+  <input type="text" placeholder="{{placeHolder}}" (focusout)="active = false"(focus)="active = true" [(ngModel)]="searchText"  (ngModelChange)="getElasticResult()" /> 
+  <a  class="searchButton" >
+    <i *ngIf = "searchText == ''" class="fa fa-search"></i>
+    <i *ngIf = "searchText != ''" class="fa fa-times" (click) ="emitSelectedObject(null);"></i>
+  </a>
+  <div class="sb-seachresults" *ngIf = "active" >
+    <ul class="sb-results-dropdown-menu" [ngStyle]="{
+      'color': options.theme,
+      'width': options.width,
+      'border-left-color': options.theme,
+      'border-right-color': options.theme
+      }" >      
+      <li *ngFor="let result of results" (mousedown)="emitSelectedObject(result.value)" [ngStyle]="{
+        'color': options.theme,
+        'font-size': options.fontSize
+        }" >
+        <span  [innerHTML]="result.label"></span></li>
+    </ul> 
+  </div>  
+</div>
