@@ -29,6 +29,9 @@ import { AppElasticComponent } from './app-elastic/app-elastic.component';
 })
 export class AppModule { }
 
+//** in your html file"
+ <app-elastic [options]="options" [placeHolder]=" place holder values"  [clearField]="clearField"
+    (selectedResult)="selectProposalElasticResult($event)"></app-elastic>
 
 ##sample Object
 
@@ -55,22 +58,32 @@ export class AppModule { }
 Name  | Description | Example | 
 ------------- | ------------- | -------------
 (selectedResult)  | On mouse down function | (selectedResult)="yourFunction($event)"
+Placeholder  | placeholder for serch box| [placeHolder]=" place holder values" 
 options  | pass as input for configuration | [options] ="yourOptons"
 options.fields  | elastic indexed fields too be serached | options.fields ={firstIndex:{},secondIndex:{} }
 options.url  | elastic end point to be used | options.url = 'your elastic URL'
 options.index  | elastic index to be used | optons.index = 'your index'
-options.type  | elastic index type |  options.type = 'yourIndexType';
-options.contextField | field to shown on searh on mouse down  |  options.contextField = 'index field to be shown';
-options.formatString  |format for the output  | options.formatString = 'firstindex | secondIndex';
+options.type  | elastic index type |  options.type = 'yourIndexType'
+options.contextField | field to shown on mouse down event  |  options.contextField = 'index field to be shown'
+options.formatString  |format for the output  | options.formatString = 'firstindex | secondIndex'
 options.theme | Custom color for the search output | options.theme = 'your color'
-options.fontSize  | the font size of serch result  | options.fontSize = '20px'
-options.width  | the width  of serch result  | options.width = '100%'
-options.debounceTime  | Discard serch values that take less than the specified time  | options.debounceTime = '100'
+options.fontSize  | Font size of search result  | options.fontSize = '20px'
+options.width  | Width  of search result  | options.width = '100%'
+options.debounceTime  | Discard search values that take less than the specified time  | options.debounceTime = '100'
+options.defaultvalue  | A default value to shown on search field  | options.defaultValue = 'Your Default value'
+
+## Other functionalities
+
+To Clear search field any time use - clearField the variable passed in elastic component intialization
+
+this.clearField = new String('true');
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
-## stle Change
- for ustom styling change the stye inside app-elastic.component.css
+## style Change
+ for custom styling change the stye inside app-elastic.component.css
 
 ## License
