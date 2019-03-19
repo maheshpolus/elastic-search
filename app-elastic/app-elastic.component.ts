@@ -1,19 +1,6 @@
 
 /**authour : Mahesh Sreenath V M
- * a common elastic search componet  currently only supports or condition for the feilds
- * options - input
- * selectedResult- output emits the selected output as event listen for this event in the component which use
- * app-elastic-component
- * options => index - index to be searched
- * fields => all the index fileds you want to search for the value
- * debouncetime => delay btn the user event triggers search call
- * url => url for the elastic host with ip and port
- * type => index type for the given search
- * contextFIeld => the field that should be used as serchText value once user selects the reuslt
- * size => the size of the search result,
- * theme => color theme of the es output(default fibi)
- * fontSize => li fontsize
- * defaultValue => Which can be used to show a default value on the serch field
+ * a common elastic search componet  currently only supports or condition for the fields
  */
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
 import { AppElasticService } from './app-elastic.service';
@@ -35,25 +22,13 @@ export class AppElasticComponent implements OnChanges, OnInit {
   results = [];
   timer: any;
   active = false;
-  query =  {
-    query: {
-        bool: {
-            should: []
-        }
-    },
-    sort: [{
-        _score: {
-            order: 'desc'
-        }
-    }],
-    highlight: {
-        pre_tags: ['<b>'],
-        post_tags: ['</b>'],
-    }
+  query = {query: {bool: {should:[]}},
+    sort: [{_score: {order:'desc'}}],
+    highlight: {pre_tags: ['<b>'],post_tags: ['</b>']}
   };
   constructor(private _appElasticService: AppElasticService) { }
   ngOnInit() {
-    this.searchText = this.options.defaultValue;
+    this.searchText = this.options.defaultValue || '';
   }
   ngOnChanges() {
     this.clearField = '' + this.clearField;
@@ -62,11 +37,8 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.results = [];
     }
   }
-
   /**makes a elastic host connection and the result is formmatted in string of label with bold tags for matching
-   * fields. use label for showing as it outputs html tag.injected it as innerhtml on html
-   * a timer is used to avoid multiple calls to server the call only occurs if the user doesn't trigger the event for
-   * 500 millisecods
+   * fields/
    */
   getElasticResult() {
     this.results = [];
@@ -75,29 +47,24 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.searchText.trim();
       this.querybuilder();
       const url = this.options.url + this.options.index + '/' + this.options.type + '/' + '_search?size=' + this.options.size;
-      this._appElasticService.search(url, this.query).then((result: any) => {
-        const source    = ((result.hits || {}).hits || []).map((hit) => hit._source );
-        const highlight = ((result.hits || {}).hits || []).map((hit) => hit.highlight );
-        source.forEach((element, index) => {
-          let label = this.options.formatString;
-          Object.keys(this.options.fields).forEach(key => {
-            label =  label.replace(key, (highlight[index][key] || source[index][key]));
-          });
-        label = label.replace(/null/g, '');
-        this.results.push({'label': label, 'value': element});
+      this._appElasticService.search(url, this.query).then((rst: any) => {
+        const src = ((rst.hits || {}).hits || []).map((hit) => hit._source );
+        const hgt = ((rst.hits || {}).hits || []).map((hit) => hit.highlight );
+        src.forEach((el, i) => {
+          let lbl = this.options.formatString;
+          Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k,(hgt[i][k]||src[i][k]));});
+        lbl = lbl.replace(/null/g, '');
+        this.results.push({'label': lbl, 'value': el});
         });
         if (!this.results.length) {
           this.results.push({'label': 'No results'});
         }
-      }, error => {
-        this.results.push({'label': 'No results'});
+      }, error => {this.results.push({'label': 'No results'});
       });
     }, this.options.debounceTime || 500);
   }
-
   /**
-   * dynamically build the query for elastic search uses the feilds from the option input and returns a
-   * newly generated query for given index and  fields with new updated input value
+   * dynamically build the query for elastic search
    */
   querybuilder() {
     this.query.highlight['fields'] = this.options.fields;

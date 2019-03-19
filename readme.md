@@ -58,7 +58,7 @@ export class AppModule { }
 ## Parameters
 Name  | Description | Example | 
 ------------- | ------------- | -------------
-(selectedResult)  | On mouse down function | (selectedResult)="yourFunction($event)"
+(selectedResult)  | On mouse down function and close button event | (selectedResult)="yourFunction($event)"
 Placeholder  | placeholder for search box| [placeHolder]=" place holder values" 
 options  | pass as input for configuration | [options] ="yourOptions"
 options.fields  | elastic indexed fields too be serached | options.fields ={firstIndex:{},secondIndex:{} }
@@ -76,15 +76,18 @@ options.defaultvalue  | A default value to be shown on search field  | options.d
 ## Other functionalities
 
 To Clear search field any time use - clearField the variable passed in elastic component intialization
-
 this.clearField = new String('true');
 
+
+The "(selectedResult)" will emit "null" on close btn usage, mouse down on error or no result cases handle your functions accordingly
+
+On elastic error or no results the drop down will show no results
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
 ## style Change
- for custom styling change the stye inside app-elastic.component.css
+ for custom styling change the style inside app-elastic.component.css
 
 ## License
