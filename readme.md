@@ -1,5 +1,5 @@
 
-# Elastic serach
+# Elastic search
 
 It's an angular component for generic use
 
@@ -41,7 +41,10 @@ export class AppModule { }
     options.size = 20;
     options.contextField = 'firstIndex';
     options.debounceTime = 500;
-    opyions
+    options.theme = 'red';
+    options.width = '100%';
+    options.fontSize = '12px';
+    options.defaultValue = 'My search Text';
     options.formatString = 'firstIndex | secondIndex (thirdIndex)';
     options.fields = {
       firstIndex: {},
@@ -49,8 +52,6 @@ export class AppModule { }
       thirdIndex: {},
       fourthIndex: {},
       fifthIndex: {},
-      status: {},
-      sponsor: {}
     };
 ```
 
@@ -58,19 +59,19 @@ export class AppModule { }
 Name  | Description | Example | 
 ------------- | ------------- | -------------
 (selectedResult)  | On mouse down function | (selectedResult)="yourFunction($event)"
-Placeholder  | placeholder for serch box| [placeHolder]=" place holder values" 
-options  | pass as input for configuration | [options] ="yourOptons"
+Placeholder  | placeholder for search box| [placeHolder]=" place holder values" 
+options  | pass as input for configuration | [options] ="yourOptions"
 options.fields  | elastic indexed fields too be serached | options.fields ={firstIndex:{},secondIndex:{} }
 options.url  | elastic end point to be used | options.url = 'your elastic URL'
-options.index  | elastic index to be used | optons.index = 'your index'
+options.index  | elastic index to be used | options.index = 'your index'
 options.type  | elastic index type |  options.type = 'yourIndexType'
-options.contextField | field to shown on mouse down event  |  options.contextField = 'index field to be shown'
+options.contextField | field to be shown on search field on mousedown event  |  options.contextField = 'index field to be shown'
 options.formatString  |format for the output  | options.formatString = 'firstindex | secondIndex'
 options.theme | Custom color for the search output | options.theme = 'your color'
 options.fontSize  | Font size of search result  | options.fontSize = '20px'
 options.width  | Width  of search result  | options.width = '100%'
 options.debounceTime  | Discard search values that take less than the specified time  | options.debounceTime = '100'
-options.defaultvalue  | A default value to shown on search field  | options.defaultValue = 'Your Default value'
+options.defaultvalue  | A default value to be shown on search field  | options.defaultValue = 'Your Default value'
 
 ## Other functionalities
 
