@@ -1,11 +1,11 @@
 
 # Elastic search
 
-It's an angular component for generic use
+It's an angular component for generic usage.
 
 ## Installation
 
-download the component and add it into your module.
+Download the component and add it into your module.
 
 ## Usage
 
@@ -58,7 +58,7 @@ export class AppModule { }
 ## Parameters
 Name  | Description | Example | 
 ------------- | ------------- | -------------
-(selectedResult)  | On mouse down function and close button event | (selectedResult)="yourFunction($event)"
+(selectedResult)  | On mouse click function and close button event | (selectedResult)="yourFunction($event)"
 Placeholder  | placeholder for search box| [placeHolder]=" place holder values" 
 options  | pass as input for configuration | [options] ="yourOptions"
 options.fields  | elastic indexed fields too be serached | options.fields ={firstIndex:{},secondIndex:{} }
@@ -75,19 +75,18 @@ options.defaultvalue  | A default value to be shown on search field  | options.d
 
 ## Other functionalities
 
-To Clear search field any time use - clearField the variable passed in elastic component intialization
-this.clearField = new String('true');
+To clear search field any time, use "clearField". The variable is passed in elasticsearch component intialization. Syntax is, this.clearField = new String('true');
 
 
-The "(selectedResult)" will emit "null" on close btn usage, mouse down on error or no result cases handle your functions accordingly
+The "(selectedResult)" will emit "null" on close button usage, mouse click on error and no result cases. Handle your functions accordingly.
 
-On elastic error or no results the drop down will show "no results"
+On elastic error or no results the drop down will be showing "no results".
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcomed. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
 ## Style changes
- for custom styling change the style inside app-elastic.component.css
+ For custom styling change the style inside app-elastic.component.css.
 
 ## License

@@ -19,18 +19,20 @@ export class AppElasticComponent implements OnChanges, OnInit {
   @Input() defaultValue;
   @Output() selectedResult: EventEmitter<any> = new EventEmitter<any>();
   searchText = '';
-  results = [];
   timer: any;
+  results = [];
   counter = -1;
-  active = false;
-  query = {query: {bool: {should:[]}},
+  active  = false;
+  query   = {query: {bool: {should:[]}},
     sort: [{_score: {order:'desc'}}],
     highlight: {pre_tags: ['<b>'],post_tags: ['</b>']}
   };
   constructor(private _appElasticService: AppElasticService) { }
+
   ngOnInit() {
     this.searchText = this.options.defaultValue || '';
   }
+  
   ngOnChanges() {
     this.clearField = '' + this.clearField;
     if (this.clearField === 'true') {
@@ -38,8 +40,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.results = [];
     }
   }
-  /**makes a elastic host connection and the result is formmatted in string of label with bold tags for matching
-   * fields/
+  /**makes a elastic host connection and the result is formmatted in string of label with bold tags for matching fields
    */
   getElasticResult() {
     this.results = [];
@@ -81,6 +82,9 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.query.query.bool.should.push(condition);
     });
   }
+  /**
+   * @param  {} value emit results on key enter mouse click to parent components
+   */
   emitSelectedObject(value) {
     this.active = false;
     this.counter = -1;
@@ -93,6 +97,9 @@ export class AppElasticComponent implements OnChanges, OnInit {
     }
     this.results = [];
   }
+  /**
+   * @param  {} event used to update counter value for keyboard event listner
+   */
   upArrowEvent(event) {
     event.preventDefault();
     if (this.counter > 0) {
@@ -103,13 +110,18 @@ export class AppElasticComponent implements OnChanges, OnInit {
       (document.getElementById('searchBox') as HTMLInputElement).focus();
     }
   }
-  downArrowEvent() {
+  /**
+   * @param  {} event  used to update counter value for keyboard event listner
+   */
+  downArrowEvent(event) {
     event.preventDefault();
     if (this.counter < document.getElementsByClassName('search-result-item').length - 1) {
       this.counter++;
       (document.getElementsByClassName('search-result-item')[this.counter] as HTMLInputElement).focus();
     }
   }
+  /** handles the click outside the result box updates counter and slear results
+   */
   hideSearchResults() {
     (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'none';
     this.active = false;
