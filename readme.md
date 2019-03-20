@@ -87,7 +87,7 @@ On elastic error or no results the drop down will show "no results"
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
-## style Change
+## Style changes
  for custom styling change the style inside app-elastic.component.css
 
 ## License

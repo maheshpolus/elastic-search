@@ -21,6 +21,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
   searchText = '';
   results = [];
   timer: any;
+  counter = -1;
   active = false;
   query = {query: {bool: {should:[]}},
     sort: [{_score: {order:'desc'}}],
@@ -48,6 +49,9 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.querybuilder();
       const url = this.options.url + this.options.index + '/' + this.options.type + '/' + '_search?size=' + this.options.size;
       this._appElasticService.search(url, this.query).then((rst: any) => {
+        this.active = true;
+        this.counter = -1;
+        (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'block';
         const src = ((rst.hits || {}).hits || []).map((hit) => hit._source );
         const hgt = ((rst.hits || {}).hits || []).map((hit) => hit.highlight );
         src.forEach((el, i) => {
@@ -79,6 +83,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
   }
   emitSelectedObject(value) {
     this.active = false;
+    this.counter = -1;
     if (value) {
       this.selectedResult.emit(value);
       this.searchText = value[this.options.contextField] || this.searchText;
@@ -87,5 +92,28 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.selectedResult.emit(null);
     }
     this.results = [];
+  }
+  upArrowEvent(event) {
+    event.preventDefault();
+    if (this.counter > 0) {
+      this.counter--;
+      (document.getElementsByClassName('search-result-item')[this.counter] as HTMLInputElement).focus();
+    } else {
+      this.counter = -1;
+      (document.getElementById('searchBox') as HTMLInputElement).focus();
+    }
+  }
+  downArrowEvent() {
+    event.preventDefault();
+    if (this.counter < document.getElementsByClassName('search-result-item').length - 1) {
+      this.counter++;
+      (document.getElementsByClassName('search-result-item')[this.counter] as HTMLInputElement).focus();
+    }
+  }
+  hideSearchResults() {
+    (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'none';
+    this.active = false;
+    this.results = [];
+    this.counter = -1;
   }
 }
