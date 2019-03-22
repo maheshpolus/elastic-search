@@ -1,6 +1,6 @@
 <div class="searchBox" id="searchElastic">
   <input id="searchBox" tabindex = "1" type="text" (focus) ="active = true"  placeholder="{{placeHolder}}" 
-    (keydown.arrowdown) = "downArrowEvent();" (keydown.esc) = "hideSearchResults();"
+    (keydown.arrowdown) = "downArrowEvent($event);" (keydown.esc) = "hideSearchResults($event);"
     [(ngModel)]="searchText" (ngModelChange)="getElasticResult()"/> 
   <a  class="searchButton" >
     <i *ngIf = "searchText == ''" class="fa fa-search"></i>

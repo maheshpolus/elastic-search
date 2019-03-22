@@ -39,7 +39,7 @@ ul.sb-results-dropdown-menu > li {
     list-style: none;
     color: #26A69A;
 }
-ul.sb-results-dropdown-menu > li:hover {
+ul.sb-results-dropdown-menu > li:hover, ul.sb-results-dropdown-menu > li:focus, ul.sb-results-dropdown-menu > li:focus-within {
 	 background: #e0eaff;
 	 color: #26A69A;
 }
@@ -65,3 +65,15 @@ ul.sb-results-dropdown-menu > li:last-child {
     border-radius: 3px;
     box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.18);
 }
+.overlay-elastic {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color:transparent;
+    z-index: 2;
+  }

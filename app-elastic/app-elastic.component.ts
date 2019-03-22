@@ -122,7 +122,8 @@ export class AppElasticComponent implements OnChanges, OnInit {
   }
   /** handles the click outside the result box updates counter and slear results
    */
-  hideSearchResults() {
+  hideSearchResults(event) {
+    event.preventDefault();
     (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'none';
     this.active = false;
     this.results = [];
