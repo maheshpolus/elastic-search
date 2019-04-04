@@ -2,7 +2,7 @@
 /**authour : Mahesh Sreenath V M
  * a common elastic search componet  currently only supports or condition for the Index feilds
  */
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit,  ChangeDetectorRef } from '@angular/core';
 import { AppElasticService } from './app-elastic.service';
 
 @Component({
@@ -27,7 +27,8 @@ export class AppElasticComponent implements OnChanges, OnInit {
     sort: [{ _score: { order: 'desc'}}],
     highlight: { pre_tags: ['<b>'], post_tags: ['</b>']}
   };
-  constructor(private _appElasticService: AppElasticService) { }
+ 
+  constructor(private _appElasticService: AppElasticService, private _ref: ChangeDetectorRef ) { }
 
   ngOnInit() {
     this.searchText = this.options.defaultValue || '';
@@ -51,6 +52,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.querybuilder();
       const url = this.options.url + this.options.index + '/' + this.options.type + '/' + '_search?size=' + this.options.size;
       this._appElasticService.search(url, this.query).then((rst: any) => {
+        this._ref.markForCheck();
         this.active = true;
         this.counter = -1;
         (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'block';
@@ -59,7 +61,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
         if(this.options.formatString) {
           src.forEach((el, i) => {
             let lbl = this.options.formatString;
-            Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k,(hgt[i][k]||src[i][k]));});
+            Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k, (hgt[i][k] || src[i][k])); });
           lbl = lbl.replace(/null/g, '');
           this.results.push({'label': lbl, 'value': el});
         });
