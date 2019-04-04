@@ -39,6 +39,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
       this.searchText = '';
       this.results = [];
     }
+    this.searchText = this.options.defaultValue || '';
   }
   /**makes a elastic host connection and the result is formmatted in string of label with bold tags for matching fields
    */
