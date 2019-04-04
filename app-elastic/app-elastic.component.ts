@@ -1,6 +1,6 @@
 
 /**authour : Mahesh Sreenath V M
- * a common elastic search componet  currently only supports or condition for the fields
+ * a common elastic search componet  currently only supports or condition for the Index feilds
  */
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
 import { AppElasticService } from './app-elastic.service';
@@ -13,19 +13,19 @@ import { AppElasticService } from './app-elastic.service';
 })
 export class AppElasticComponent implements OnChanges, OnInit {
 
-  @Input() options: any = {};
-  @Input() placeHolder;
-  @Input() clearField;
-  @Input() defaultValue;
+  @Input()  options: any = {};
+  @Input()  placeHolder;
+  @Input()  clearField;
+  @Input()  defaultValue;
   @Output() selectedResult: EventEmitter<any> = new EventEmitter<any>();
   searchText = '';
   timer: any;
   results = [];
   counter = -1;
   active  = false;
-  query   = {query: {bool: {should:[]}},
-    sort: [{_score: {order:'desc'}}],
-    highlight: {pre_tags: ['<b>'],post_tags: ['</b>']}
+  query   = { query: { bool: { should: [] }},
+    sort: [{ _score: { order: 'desc'}}],
+    highlight: { pre_tags: ['<b>'], post_tags: ['</b>']}
   };
   constructor(private _appElasticService: AppElasticService) { }
 
@@ -55,12 +55,22 @@ export class AppElasticComponent implements OnChanges, OnInit {
         (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'block';
         const src = ((rst.hits || {}).hits || []).map((hit) => hit._source );
         const hgt = ((rst.hits || {}).hits || []).map((hit) => hit.highlight );
-        src.forEach((el, i) => {
-          let lbl = this.options.formatString;
-          Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k,(hgt[i][k]||src[i][k]));});
-        lbl = lbl.replace(/null/g, '');
-        this.results.push({'label': lbl, 'value': el});
+        if(this.options.formatString) {
+          src.forEach((el, i) => {
+            let lbl = this.options.formatString;
+            Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k,(hgt[i][k]||src[i][k]));});
+          lbl = lbl.replace(/null/g, '');
+          this.results.push({'label': lbl, 'value': el});
         });
+        } else {
+          src.forEach((el, i) => {
+            let lbl = '';
+            Object.keys(this.options.fields).forEach(k => {
+              lbl =  ((hgt[i][k] || src[i][k]) != null) ? lbl + (hgt[i][k] || src[i][k]) + '|' : lbl + '';
+            });
+          this.results.push({'label': lbl.slice(0, -1), 'value': el});
+          });
+        }
         if (!this.results.length) {
           this.results.push({'label': 'No results'});
         }
