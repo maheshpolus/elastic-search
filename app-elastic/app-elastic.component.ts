@@ -99,6 +99,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
    * @param  {} value emit results on key enter mouse click to parent components
    */
   emitSelectedObject(value) {
+    (document.getElementById('overlay-elastic') as HTMLInputElement).style.display = 'none';
     this.active = false;
     this.counter = -1;
     if (value) {
