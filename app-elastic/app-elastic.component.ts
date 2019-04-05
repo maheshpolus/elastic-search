@@ -134,7 +134,9 @@ export class AppElasticComponent implements OnChanges, OnInit {
       (document.getElementsByClassName('search-result-item')[this.counter] as HTMLInputElement).focus();
     }
   }
-  /** handles the click outside the result box updates counter and slear results
+  /**
+   * @param  {} event
+   *  handles the click outside the result box updates counter and slear results
    */
   hideSearchResults(event) {
     event.preventDefault();
