@@ -61,21 +61,33 @@ Name  | Description | Example |
 (selectedResult)  | On mouse click function and close button event | (selectedResult)="yourFunction($event)"
 Placeholder  | placeholder for search box| [placeHolder]=" place holder values" 
 options  | pass as input for configuration | [options] ="yourOptions"
-options.fields  | elastic indexed fields too be serached | options.fields ={firstIndex:{},secondIndex:{} }
+options.fields  | elastic indexed fields too be searched | options.fields ={firstIndex:{},secondIndex:{} }
 options.url  | elastic end point to be used | options.url = 'your elastic URL'
 options.index  | elastic index to be used | options.index = 'your index'
 options.type  | elastic index type |  options.type = 'yourIndexType'
+options.size  | maximum size of search return (optional) | options.size = '20'
 options.contextField | field to be shown on search field on mousedown event  |  options.contextField = 'index field to be shown'
-options.formatString  |format for the output  | options.formatString = 'firstindex | secondIndex'
-options.theme | Custom color for the search output | options.theme = 'your color'
-options.fontSize  | Font size of search result  | options.fontSize = '20px'
-options.width  | Width  of search result  | options.width = '100%'
-options.debounceTime  | Discard search values that take less than the specified time  | options.debounceTime = '100'
-options.defaultvalue  | A default value to be shown on search field  | options.defaultValue = 'Your Default value'
+options.formatString  | format for the output (optional)  | options.formatString = 'firstindex | secondIndex'
+options.theme | Custom color for the search output (optional) | options.theme = 'your color'
+options.fontSize  | Font size of search result (optional)  | options.fontSize = '20px'
+options.width  | Width  of search (optional) | options.width = '100%'
+options.debounceTime  | Discard search values that take less than the specified time (optional)  | options.debounceTime = '100'
+options.defaultvalue  | A default value to be shown on search field (optional)  | options.defaultValue = 'Your Default value'
 
 ## Other functionalities
 
+if no 'formatString' is provided then the  default behaviour will be 'firstIndex | secondIndex| thirdIndex | ...'
+
 To clear search field any time, use "clearField". The variable is passed in elasticsearch component intialization. Syntax is, this.clearField = new String('true');
+
+If you need to update the 'defualtValue' after intailization use new refernce for your options
+
+```TypeScript
+
+this.options = Object.assign({}, this.options) 
+this.clearField = new String('false');
+
+```
 
 
 The "(selectedResult)" will emit "null" on close button usage, mouse click on error and no result cases. Handle your functions accordingly.

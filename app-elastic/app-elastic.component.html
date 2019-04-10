@@ -1,23 +1,21 @@
 <div class="searchBox" id="searchElastic">
-  <input id="searchBox" tabindex = "1" type="text" (focus) ="active = true"  placeholder="{{placeHolder}}" 
-    (keydown.arrowdown) = "downArrowEvent($event);" (keydown.esc) = "hideSearchResults($event);"
+  <input id="searchBox" type="text" (focus) ="isActive = true" (focusout) ="isActive = false"   placeholder="{{placeHolder}}" 
+    (keydown.arrowdown) = "downArrowEvent($event);" 
+    (keydown.esc) = "hideSearchResults();" 
+    (keydown.arrowup) = "upArrowEvent($event);"
+    (keydown.enter) = "enterKeyEvent();"
     [(ngModel)]="searchText" (ngModelChange)="getElasticResult()"/> 
   <a  class="searchButton" >
     <i *ngIf = "searchText == ''" class="fa fa-search"></i>
     <i *ngIf = "searchText != ''" class="fa fa-times" (click) ="emitSelectedObject(null);"></i>
   </a>
-  <div id="overlay-elastic" class="overlay-elastic" (click)="hideSearchResults($event)"></div>
-  <div class="sb-seachresults" *ngIf = "active" >
-    <ul tabindex = "2"  id="searchList" class="sb-results-dropdown-menu" [ngStyle]="{
+  <div class="sb-seachresults" *ngIf = "isActive" >
+    <ul id="searchList" class="sb-results-dropdown-menu" [ngStyle]="{
       'color': options.theme,'width': options.width,'border-left-color': options.theme,'border-right-color': options.theme}" >      
-      <li tabindex="3" class="search-result-item" *ngFor="let result of results"
-        (mousedown)="emitSelectedObject(result.value)" 
-        [ngStyle]="{'color': options.theme,'font-size': options.fontSize}" 
-        (keydown.enter) = "emitSelectedObject(result.value);" 
-        (keydown.arrowdown) = "downArrowEvent($event);"
-        (keydown.arrowup) = "upArrowEvent($event);"
-        (keydown.esc) = "hideSearchResults();">
-        <span tabindex="3" [innerHTML]="result.label"></span>
+      <li  class="search-result-item" *ngFor="let result of results"
+        (click)="emitSelectedObject(result.value)" 
+        [ngStyle]="{'color': options.theme,'font-size': options.fontSize}">
+        <span [innerHTML]="result.label"></span>
       </li>
     </ul> 
   </div>  

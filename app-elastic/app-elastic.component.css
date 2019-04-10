@@ -43,6 +43,10 @@ ul.sb-results-dropdown-menu > li:hover, ul.sb-results-dropdown-menu > li:focus, 
 	 background: #e0eaff;
 	 color: #26A69A;
 }
+.highlight{
+    background: #e0eaff;
+	color: #26A69A; 
+}
 
 ul.sb-results-dropdown-menu > li span {
     line-height:27px;
