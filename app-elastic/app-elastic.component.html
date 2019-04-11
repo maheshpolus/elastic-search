@@ -13,7 +13,7 @@
     <ul id="searchList" class="sb-results-dropdown-menu" [ngStyle]="{
       'color': options.theme,'width': options.width,'border-left-color': options.theme,'border-right-color': options.theme}" >      
       <li  class="search-result-item" *ngFor="let result of results"
-        (click)="emitSelectedObject(result.value)" 
+         (click)="emitSelectedObject(result.value)"  (mousedown)="emitSelectedObject(result.value)"
         [ngStyle]="{'color': options.theme,'font-size': options.fontSize}">
         <span [innerHTML]="result.label"></span>
       </li>
