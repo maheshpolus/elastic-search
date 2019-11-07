@@ -3,7 +3,7 @@
  * a common elastic search componet  currently only supports or condition for the Index feilds
  * visit https://github.com/maheshpolus/elastic-search for updates and documents
  */
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit,  ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit,  ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AppElasticService } from './app-elastic.service';
 
 @Component({
@@ -17,8 +17,10 @@ export class AppElasticComponent implements OnChanges, OnInit {
   @Input()  options: any = {};
   @Input()  placeHolder;
   @Input()  clearField;
-  @Input()  defaultValue;
+  @Input()  isError;
   @Output() selectedResult: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEmpty: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('searchField') searchField: ElementRef;
   searchText = '';
   tempSearchText = '';
   timer: any;
@@ -35,12 +37,16 @@ export class AppElasticComponent implements OnChanges, OnInit {
     this.searchText = this.options.defaultValue || '';
   }
   ngOnChanges() {
+    if (!this.isError) {
+      this.searchText = this.options.defaultValue || '';
+    }
     this.clearField = '' + this.clearField;
     if (this.clearField === 'true') {
       this.searchText = '';
       this.results = [];
     }
-    this.searchText = this.options.defaultValue || '';
+    this.isError ? this.searchField.nativeElement.classList.add('is-invalid')
+                 : this.searchField.nativeElement.classList.remove('is-invalid');
   }
   /**makes a elastic host connection and the result is formmatted in string of label with bold tags for matching fields
    */
@@ -49,7 +55,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
     clearTimeout(this.timer);
      this.timer = setTimeout(() => {
       this.searchText.trim();
-      this.querybuilder();
+      this.querybuilder(this.searchText);
       const url = this.options.url + this.options.index + '/' + this.options.type + '/' + '_search?size=' + (this.options.size || 20);
       this._appElasticService.search(url, this.query).then((rst: any) => {
         this._ref.markForCheck();
@@ -60,7 +66,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
         if (this.options.formatString) {
           src.forEach((el, i) => {
             let lbl = this.options.formatString;
-            Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(k, (hgt[i][k] || src[i][k])); });
+            Object.keys(this.options.fields).forEach(k => { lbl = lbl.replace(new RegExp(k, 'g'), (hgt[i][k] || src[i][k])); });
           lbl = lbl.replace(/null/g, '');
           this.results.push({'label': lbl, 'value': el});
         });
@@ -74,6 +80,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
           });
         }
         if (!this.results.length) {
+          this.onEmpty.emit({'searchString': this.searchText });
           this.results.push({'label': 'No results'});
         }
       }, error => {this.results.push({'label': 'No results'});
@@ -83,14 +90,14 @@ export class AppElasticComponent implements OnChanges, OnInit {
   /**
    * dynamically build the query for elastic search
    */
-  querybuilder() {
+  querybuilder(searchText) {
     this.query.highlight['fields'] = this.options.fields;
     let condition: any = {};
     this.query.query.bool.should = [];
     Object.keys(this.options.fields).forEach(field => {
       condition = Object.assign({} , condition);
       condition.match = {};
-      condition.match[field] = { query: this.searchText, operator: 'or'};
+      condition.match[field] = { query: searchText.toLowerCase(), operator: 'or'};
       this.query.query.bool.should.push(condition);
     });
   }
@@ -98,16 +105,17 @@ export class AppElasticComponent implements OnChanges, OnInit {
    * @param  {} value emit results on key enter mouse click to parent components
    */
   emitSelectedObject(value) {
-    this.isActive = false;
     this.counter = -1;
     if (value) {
       this.selectedResult.emit(value);
       this.searchText = value[this.options.contextField] || this.searchText;
+      this.options.defaultValue = this.searchText;
     } else {
       this.searchText = '';
       this.selectedResult.emit(null);
     }
     this.results = [];
+    this.isActive = false;
   }
   /**
    * @param  {} event used to update counter value for keyboard event listner
@@ -163,6 +171,7 @@ export class AppElasticComponent implements OnChanges, OnInit {
   addHighlight() {
     const el = (document.getElementsByClassName('search-result-item')[this.counter] as HTMLInputElement);
     if (el) {
+      el.scrollIntoView({block: 'nearest'});
       el.classList.add('highlight');
     }
   }
