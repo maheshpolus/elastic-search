@@ -30,7 +30,7 @@ import { AppElasticComponent } from './app-elastic/app-elastic.component';
 export class AppModule { }
 
 //** in your html file"
- <app-elastic [options]="options" [placeHolder]=" place holder values"  [clearField]="clearField"
+ <app-elastic [options]="options" [placeHolder]=" place holder values"  [clearField]="clearField" [isError]="isError"
     (selectedResult)="selectProposalElasticResult($event)"></app-elastic>
 
 ##sample Object
@@ -46,6 +46,7 @@ export class AppModule { }
     options.fontSize = '12px';
     options.defaultValue = 'My search Text';
     options.formatString = 'firstIndex | secondIndex (thirdIndex)';
+    options.errorMessage = 'Please fill the following mandatory field';
     options.fields = {
       firstIndex: {},
       secondIndex: {},
@@ -72,7 +73,9 @@ options.theme | Custom color for the search output (optional) | options.theme = 
 options.fontSize  | Font size of search result (optional)  | options.fontSize = '20px'
 options.width  | Width  of search (optional) | options.width = '100%'
 options.debounceTime  | Discard search values that take less than the specified time (optional)  | options.debounceTime = '100'
+options.errorMessage	|To dispaly error message on isError condition true	| options.errorMessage = "Please fill the following mandatory field"
 options.defaultvalue  | A default value to be shown on search field (optional)  | options.defaultValue = 'Your Default value'
+isError | used to show error message | isError = true | false
 
 ## Other functionalities
 
