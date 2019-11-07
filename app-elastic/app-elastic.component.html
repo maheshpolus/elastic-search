@@ -1,22 +1,24 @@
-<div class="searchBox" id="searchElastic">
-  <input id="searchBox" type="text" (focus) ="isActive = true" (focusout) ="isActive = false"   placeholder="{{placeHolder}}" 
+
+<div class="elastic-outer">
+  <input id="searchBox" #searchField type="text" (focusout) ="isActive = false"   placeholder="{{placeHolder}}" 
     (keydown.arrowdown) = "downArrowEvent($event);" 
     (keydown.esc) = "hideSearchResults();" 
     (keydown.arrowup) = "upArrowEvent($event);"
     (keydown.enter) = "enterKeyEvent();"
-    [(ngModel)]="searchText" (ngModelChange)="getElasticResult()"/> 
+    [(ngModel)]="searchText" (ngModelChange)="getElasticResult()" class = "app-elastic-search form-control pr-25" autocomplete="off"/> 
   <a  class="searchButton" >
-    <i *ngIf = "searchText == ''" class="fa fa-search"></i>
-    <i *ngIf = "searchText != ''" class="fa fa-times" (click) ="emitSelectedObject(null);"></i>
+    <i *ngIf = "searchText == ''" class="fa fa-search fa-med"></i>
+    <i *ngIf = "searchText != ''" class="fa fa-times fa-med" (click) ="emitSelectedObject(null);"></i>
   </a>
   <div class="sb-seachresults" *ngIf = "isActive" >
     <ul id="searchList" class="sb-results-dropdown-menu" [ngStyle]="{
       'color': options.theme,'width': options.width,'border-left-color': options.theme,'border-right-color': options.theme}" >      
       <li  class="search-result-item" *ngFor="let result of results"
-         (click)="emitSelectedObject(result.value)"  (mousedown)="emitSelectedObject(result.value)"
+        (click)="emitSelectedObject(result.value)"  (mousedown)="emitSelectedObject(result.value)"
         [ngStyle]="{'color': options.theme,'font-size': options.fontSize}">
         <span [innerHTML]="result.label"></span>
       </li>
     </ul> 
   </div>  
 </div>
+<div class="invalid-feedback d-block" *ngIf="isError">{{options.errorMessage}}</div>
